@@ -13,6 +13,8 @@ import { PieComponent } from './widgets/pie/pie.component';
 import { ModalViewComponent } from '../modal-view/modal-view.component';
 import { ModalComponent } from '../modal/modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { HttpClientModule } from '@angular/common/http';
+import { BrowserModule } from '@angular/platform-browser';
 
 @NgModule({
   declarations: [
@@ -39,6 +41,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     HighchartsChartModule,
     MatDialogModule,
     MatCardModule,
+    HttpClientModule,
+    BrowserModule,
   ],
   exports: [
     HeaderComponent,

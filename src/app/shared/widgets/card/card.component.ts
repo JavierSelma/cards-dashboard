@@ -2,25 +2,52 @@ import { Component, OnInit, Input } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import HC_exporting from 'highcharts/modules/exporting';
 import { MatCardModule } from '@angular/material';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { BrowserModule } from '@angular/platform-browser';
+import { Observable } from 'rxjs';
+import {catchError } from 'rxjs/operators';
+import { error } from 'console';
+
+interface ValuesToPost {
+  total : number,
+  partial : number,
+  partialPercentage : number,
+  restPercentage : number,
+}
 
 @Component({
   selector: 'app-widget-card',
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss']
 })
+
 export class CardComponent implements OnInit {
 
   @Input() label: string;
 
-  total : number;
-  partial : number;
-  partialPercentage : number;
-  restPercentage : number;
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type':  'application/json',
+      Authorization: 'my-auth-token'
+    })
+  };
+
+  backEndURL : string
+
+
+  valuesToPost : ValuesToPost = {
+    total : 0,
+    partial : 0,
+    partialPercentage : 0,
+    restPercentage : 0,
+  };
+
+
 
   Highcharts = Highcharts;
   chartOptions = {};
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   ngOnInit() {
     this.calculateRandomValues();
@@ -57,12 +84,12 @@ export class CardComponent implements OnInit {
         colorByPoint: true,
         data: [{
             name: 'Fulliness',
-            y: this.partialPercentage,
+            y: this.valuesToPost.partialPercentage,
             sliced: true,
             selected: true
         }, {
             name: 'Emptiness',
-            y:this.restPercentage
+            y:this.valuesToPost.restPercentage
         }]
       }]
     };
@@ -77,10 +104,13 @@ export class CardComponent implements OnInit {
   }
 
   calculateRandomValues(){
-    this.total = Math.floor(Math.random() * (1000));
-    this.partial = Math.floor(Math.random() * (this.total));
-    this.partialPercentage = (this.partial * 100) / this.total
-    this.restPercentage = 100 - this.partialPercentage;
+    this.valuesToPost.total = Math.floor(Math.random() * (1000));
+    this.valuesToPost.partial = Math.floor(Math.random() * (this.valuesToPost.total));
+    this.valuesToPost.partialPercentage = (this.valuesToPost.partial * 100) / this.valuesToPost.total
+    this.valuesToPost.restPercentage = 100 - this.valuesToPost.partialPercentage;
   }
 
+  addValues(values : ValuesToPost): Observable<ValuesToPost> {
+    return this.http.post<ValuesToPost>(this.backEndURL, this.valuesToPost, this.httpOptions)
+  }
 }
