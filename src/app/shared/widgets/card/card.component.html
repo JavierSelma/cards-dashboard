@@ -1,20 +1,17 @@
-<div class="text">
+<mat-card>
+  <div class="text">
     <h4>{{ label }}</h4>
+    <br>
 
-    <span class="total">{{ total }}</span>
+    <span class="total">The actual measure is {{partial}} cm from a total of {{ total }} cm</span>
 
-    <span>
-        <mat-icon color="primary">trending_up</mat-icon>
-    </span>
+  </div>
+  <br>
+  <div class="widget">
+      <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptions"
+          style="width: 100%; height: 300px; display: block;">
+      </highcharts-chart>
+  </div>
+</mat-card>
 
-    <span class="description">
-        {{ percentage }}%
-    </span>
-
-    <span> of target</span>
-</div>
-<div class="widget">
-    <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptions"
-        style="width: 100%; height: 60px; display: block;">
-    </highcharts-chart>
-</div>
+<br>

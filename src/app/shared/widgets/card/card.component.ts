@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import HC_exporting from 'highcharts/modules/exporting';
+import { MatCardModule } from '@angular/material';
 
 @Component({
   selector: 'app-widget-card',
@@ -10,9 +11,11 @@ import HC_exporting from 'highcharts/modules/exporting';
 export class CardComponent implements OnInit {
 
   @Input() label: string;
-  @Input() total: string;
-  @Input() percentage: string;
-  @Input() data = [];
+
+  total : number;
+  partial : number;
+  partialPercentage : number;
+  restPercentage : number;
 
   Highcharts = Highcharts;
   chartOptions = {};
@@ -20,57 +23,47 @@ export class CardComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.calculateRandomValues();
     this.chartOptions = {
       chart: {
-        type: 'area',
-        backgroundColor: null,
-        borderWidth: 0,
-        margin: [2, 2, 2, 2],
-        height: 60
-      },
-      title: {
-        text: null
-      },
-      subtitle: {
-        text: null
-      },
-      tooltip: {
-        split: true,
-        outside: true
-      },
-      legend: {
-        enabled: false
-      },
-      credits: {
-        enabled: false
-      },
-      exporting: {
-        enabled: false,
-      },
-      xAxis: {
-        labels: {
-          enabled: false,
-        },
-        title: {
-          text: null
-        },
-        startOnTick: false,
-        endOnTick: false,
-        tickOptions: []
-      },
-      yAxis: {
-        labels: {
-          enabled: false,
-        },
-        title: {
-          text: null
-        },
-        startOnTick: false,
-        endOnTick: false,
-        tickOptions: []
-      },
-      series: [{
-        data: this.data
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    title: {
+        text: 'Percentage of fullines'
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    accessibility: {
+        point: {
+            valueSuffix: '%'
+        }
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+            }
+        }
+    },
+    series: [{
+        name: "Container Measurement",
+        colorByPoint: true,
+        data: [{
+            name: 'Fulliness',
+            y: this.partialPercentage,
+            sliced: true,
+            selected: true
+        }, {
+            name: 'Emptiness',
+            y:this.restPercentage
+        }]
       }]
     };
 
@@ -81,6 +74,13 @@ export class CardComponent implements OnInit {
         new Event('resize')
       );
     }, 300);
+  }
+
+  calculateRandomValues(){
+    this.total = Math.floor(Math.random() * (1000));
+    this.partial = Math.floor(Math.random() * (this.total));
+    this.partialPercentage = (this.partial * 100) / this.total
+    this.restPercentage = 100 - this.partialPercentage;
   }
 
 }

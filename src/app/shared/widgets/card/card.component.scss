@@ -4,7 +4,7 @@ h4 {
 }
 
 .total {
-  font-size: 3em;
+  font-size: 1.5em;
 }
 
 .mat-icon,
@@ -17,4 +17,10 @@ h4 {
   position: relative;
   padding: 0 20px;
   top: 5px;
+}
+
+.stats-cards {
+  .mat-card {
+    overflow: hidden;
+  }
 }

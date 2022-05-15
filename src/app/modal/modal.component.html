@@ -1,0 +1,13 @@
+<div id="modal-content-wrapper">
+  <header id="modal-header">
+      <h1 id="modal-title">Cards to create:</h1>
+      <br>
+      <input type="number" min="0" max="3" id="cardInput" placeholder="1" name="cards">
+  </header>
+  <section id="modal-body">
+  </section>
+  <footer id="modal-footer">
+      <button mat-raised-button id="modal-cancel-button" (click)="closeModal()">Cancel</button>
+      <button mat-raised-button id="modal-action-button" (click)="actionFunction()">Create</button>
+  </footer>
+</div>
