@@ -5,8 +5,6 @@ import { MatCardModule } from '@angular/material';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
-import {catchError } from 'rxjs/operators';
-import { error } from 'console';
 
 interface ValuesToPost {
   total : number,
